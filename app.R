@@ -1,5 +1,5 @@
 ### App to create map of air quality sites with NJ fueling stations ###
-# Load necessary libraries to make app run #
+### Load necessary libraries to make app run ###
 library(shiny)
 library(leaflet)
 library(leaflet.extras)
@@ -57,7 +57,8 @@ server <- function(input, output) {
                   highlightOptions = highlightOptions(color = "blue",
                                                       weight = 2,bringToFront = TRUE))%>%
       setView(lng = -74.4 ,lat =40, zoom = 8)%>%
-      addMarkers(~LON,~LAT, popup = ~paste("<h4> Site Name:</h4>",SITE_NAME,sep = ""),
+      addMarkers(~LON,~LAT, popup = ~paste("<h4> Site Name:</h4>",SITE_NAME,
+                                           "<h4> Address:</h4>",ADDRESS,sep = ""),
                  label = ~SITE_NAME)%>%
       addAwesomeMarkers(data = fueling_nj,~LON,~LAT,icon = icons,
                         popup = ~paste("<h6> County:</h4>",County,
