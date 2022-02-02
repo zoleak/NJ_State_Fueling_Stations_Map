@@ -2,7 +2,7 @@
 #
 # Example R code to install packages if not already installed
 #
-my_packages = c("shiny", "tidyverse", "readxl","shinycssloaders","shinymanager","plyr")
+my_packages = c("shiny", "leaflet", "leaflet.extras","shinycssloaders","readxl","sf","readr")
 install_if_missing = function(p) {
   if (p %in% rownames(installed.packages()) == FALSE) {
     install.packages(p)
