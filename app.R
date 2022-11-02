@@ -12,7 +12,6 @@ library(rvest)
 library(stringr)
 library(dplyr)
 library(tidyr)
-library(shinyMobile)
 library(shinyjs)
 library(leaflegend)
 ###############################################################################
@@ -66,19 +65,25 @@ Shiny.onInputChange("long", coords.longitude);
 };
 '
 ### Define UI for application ###
-ui <- f7Page(f7SingleLayout(
-   
+ui <- fluidPage(
    ### Application title ###
-  navbar=f7Navbar(
-  title = h1(id="big-heading", "NJ State Fueling Stations/Air Quality Stations"),
-  tags$style(HTML("#big-heading{color: #074dc3;text-align: center;background-color: #D3D3D3;}"))),
-  
-  toolbar = f7Toolbar(
-    position = "bottom",
-    f7Link(label = "Fueling Station Website",
-      href = "https://www.nj.gov/treasury/administration/statewide-support/motor-fuel-locations.shtml")),
-  
-  # Tell shiny we will use some Javascript
+  h1(id="big-heading", "NJ State Fueling Stations/Air Quality Stations"),
+  tags$style(HTML("#big-heading{color: #074dc3;text-align: center;background-color: #D3D3D3;}
+                  html {
+             position: relative;
+             min-height: 100%;
+           }
+           body {
+             margin-bottom: 60px; /* Margin bottom by footer height */
+           }
+           .footer {
+             position: absolute;
+             bottom: 0;
+             width: 100%;
+             height: 60px; /* Set the fixed height of the footer here */
+             background-color: #f5f5f5;
+           }")),
+# Tell shiny we will use some Javascript
   useShinyjs(),
   extendShinyjs(text = jsCode, functions = c("geoloc")),
   # One button and one map
@@ -87,9 +92,15 @@ ui <- f7Page(f7SingleLayout(
   
    ### Leaflet output ###
    leafletOutput("fuelmap", height = "95vh")%>%
-     withSpinner(type = 5, color = "blue")
-
-))
+     withSpinner(type = 5, color = "blue"),
+tags$footer(
+  "NJ State Vehicle Fueling Station Website:",
+  class = "footer",
+  tags$a(
+    "https://www.nj.gov/treasury/administration/statewide-support/motor-fuel-locations.shtml",
+    target = "_blank",
+    href = "https://www.nj.gov/treasury/administration/statewide-support/motor-fuel-locations.shtml"
+  )))
 ###############################################################################
 ### Define server logic ###
 server <- function(input, output) {
@@ -103,7 +114,6 @@ server <- function(input, output) {
     shadowWidth = 50, shadowHeight = 64,
     shadowAnchorX = 4, shadowAnchorY = 62
   )
-  
   # Icons for gas stations
   gas_Icon <- makeIcon(
     iconUrl = "https://png.pngtree.com/png-vector/20190319/ourlarge/pngtree-vector-gas-icon-png-image_845941.jpg",
